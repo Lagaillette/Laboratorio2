@@ -1,0 +1,5 @@
+Miembro [numSocios=1, nombre=juan, numero de motos=0, importe=0]
+Miembro [numSocios=2, nombre=jose, numero de motos=1, importe=2000]
+   Moto [id=0, nombre=suzuki, CC=150, coste=2000, miembro=Miembro [numSocios=2, nombre=jose, numero de motos=1, importe=2000]]
+
+jose el socios numero 2 deja la moto suzuki con el id 0 al socios 1 juan
