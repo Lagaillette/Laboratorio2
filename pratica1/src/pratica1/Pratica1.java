@@ -26,14 +26,17 @@ public class Pratica1 {
 	static ArrayList<Moto> motos = new ArrayList<Moto>();
 
 	static ArrayList<Cesion> historicaCesiones = new ArrayList<Cesion>();
-
-
+	//importe inicial
+	static int importeInicial = 0;
 	public static void main(String[] args) {
 		// TODO code application logic here	
 		boolean end = false;
 
 		int choice = 0;
-
+		do{
+			System.out.println("cual es el importe inicial? tiene que ser mas de 0");
+			importeInicial = pedirEntero();
+		}while(importeInicial <= 0);
 		do{
 			System.out.println("1. Registrar un nuevo miembro \n"
 					+ "2. Registrar una nueva motocicleta \n"
@@ -374,7 +377,7 @@ public class Pratica1 {
 	public static boolean añadirMotoAMiembro(Moto moto, Miembro miembro){
 		boolean añadido = false;
 		int importe = miembro.importe + moto.coste;
-		if(importe > 6000){
+		if(importe > importeInicial){
 			System.out.println("Este miembro no puede coger esta moto. Su importe es demasiado grande");
 		}else{
 			int indexMiembro = miembros.indexOf(miembro);
