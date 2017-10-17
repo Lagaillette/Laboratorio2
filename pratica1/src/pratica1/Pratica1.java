@@ -44,8 +44,9 @@ public class Pratica1 {
 					+ "4. Listar en pantalla los miembros con motos en posesión \n"
 					+ "5. Listar todas las motos \n"
 					+ "6. Mostrar las cesiones realizadas \n"
-					+ "7. Salir del programa \n"
-					+ "8. Incrementar otros gastos a una moto \n"
+					+ "7. Incrementar otros gastos a una moto \n"
+					+ "8. Eliminar un miembro \n"
+					+ "9. Salir del programa \n"
 					);
 			try {
 				choice = pedirEntero();
@@ -65,7 +66,9 @@ public class Pratica1 {
 				break;
 				case 7: IncrementarOtrosGastos();
 				break;
-				case 8: escribirFicheroTexto();
+				case 8: EliminarMiembro();
+				break;
+				case 9: escribirFicheroTexto();
 						end = true;
 				break;
 				
@@ -138,7 +141,7 @@ public class Pratica1 {
 	 */
 	public static void registrarUnaCesion(){
 		if(motos.size() == 0 || miembros.size() < 2 ){
-			System.out.println("No Hay miembro o motos necesarios para registrar una cesion");
+			System.out.println("No Hay miembros o motos necesarios para registrar una cesion");
 		}else{
 			boolean valorIncorrecto = true;
 			Miembro miembro1 = null;
@@ -155,15 +158,30 @@ public class Pratica1 {
 			
 			moto = getMotoById(id);
 			
-			do{
-				System.out.println("cual es el id del miembro que va a haber la moto");
-				numSocios1 = pedirEntero();
-			}while(!existeMiembro(numSocios1));
-			
-			miembro1 = getMiembroByNumSocios(numSocios1);
-			
-			miembro2 = moto.getMiembro();
-			
+			registrarCesionDeUnaMoto(moto);
+		}
+		
+
+	}
+	
+	public static void registrarCesionDeUnaMoto(Moto moto){
+		//el que va a tener la moto
+		Miembro miembro1;
+		//el que va a dejar la moto
+		Miembro miembro2;
+		listaMiembros();
+		int numSocios1;
+		do{
+			System.out.println("cual es el id del miembro que va a haber la moto");
+			numSocios1 = pedirEntero();
+		}while(!existeMiembro(numSocios1));
+		miembro1 = getMiembroByNumSocios(numSocios1);
+		
+		miembro2 = moto.getMiembro();
+		
+		if (miembro1 == miembro2){
+			System.out.println("No puedes hacer una cesion para el mismo miembro");
+		}else{
 			//si podemos anadir la moto al nuevo miembro, entonces lo hacemos
 			if(añadirMotoAMiembro(moto, miembro1)){
 				moto.setMiembro(miembro1);
@@ -172,13 +190,8 @@ public class Pratica1 {
 				Cesion cesion = new Cesion(moto, miembro1, miembro2);
 				historicaCesiones.add(cesion);
 			}
-
-			
-			
-			
 		}
 		
-
 	}
 
 	/**
@@ -420,7 +433,7 @@ public class Pratica1 {
 		return añadido;	
 	}
 	
-	
+
 	/**
 	 * Permite hacer las modificaciones del importe y del numero de motos des miembre a quien quitamos la moto
 	 * @param moto
@@ -433,6 +446,9 @@ public class Pratica1 {
 		miembros.set(index, miembro);
 	}
 	
+	/**
+	 * permite incrementar otros gastos de una moto
+	 */
 	public static void IncrementarOtrosGastos(){
 		listaMotos();
 		System.out.println("que es el id de la moto que quiere incrementar los gastos");
@@ -451,6 +467,44 @@ public class Pratica1 {
 		motos.set(index, moto);
 		
 		System.out.println("otros gastos bien añadidos");
+	}
+	
+	public static void EliminarMiembro(){
+		Moto moto;
+		int numSocios;
+		listaMiembros();
+		System.out.println("Cual es el miembro que quieres eliminar?");
+		do{
+			numSocios = pedirEntero();
+		}while(!existeMiembro(numSocios));
+		Miembro miembro = getMiembroByNumSocios(numSocios);
+		ArrayList<Moto> motosACambiar = CogerMotoDeUnMiembro(numSocios);
+		Iterator itMotos = motosACambiar.iterator();
+		while(itMotos.hasNext()){
+			moto = (Moto) itMotos.next();
+			System.out.println("Tenemos que cambiar el miembro que tiene la moto : " + moto.toString() + "/n");
+			while(moto.getMiembro() == miembro){
+				registrarCesionDeUnaMoto(moto);
+			}	
+		}
+		miembros.remove(miembro);
+		
+		
+	}
+	
+	public static ArrayList<Moto> CogerMotoDeUnMiembro(int numSocios){
+		ArrayList<Moto> motosDelMiembro = new ArrayList<Moto>();
+		Moto moto;
+		Miembro miembro = getMiembroByNumSocios(numSocios);
+		Iterator itMotos = motos.iterator();
+		while(itMotos.hasNext()){
+			moto = (Moto) itMotos.next();
+			if(moto.getMiembro() == miembro){
+				motosDelMiembro.add(moto);
+			}
+
+		} 
+		return motosDelMiembro;
 	}
 	/**
 	 * Escribe los miembros con las motos y las cesiones dentro de un fichero
