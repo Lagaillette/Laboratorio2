@@ -18,21 +18,39 @@ public class Moto {
     int CC;
     int coste;
     Miembro miembro;
+    int otrosGastos;
     
-    Moto(String nombre,int CC,int coste, Miembro miembro){
+    Moto(String nombre,int CC,int coste, Miembro miembro, int otrosGastos){
         this.id = idIncrement;
         this.nombre = nombre;
         this.CC = CC;
         this.coste = coste;
         idIncrement = idIncrement + 1;
         this.miembro = miembro;
+        this.otrosGastos = otrosGastos;
     }
+
+	
 
 	@Override
 	public String toString() {
 		return "Moto [id=" + id + ", nombre=" + nombre + ", CC=" + CC + ", coste=" + coste + ", miembro=" + miembro
-				+ "]";
+				+ ", otrosGastos=" + otrosGastos + "]";
 	}
+
+
+
+	public int getOtrosGastos() {
+		return otrosGastos;
+	}
+
+
+
+	public void setOtrosGastos(int otrosGastos) {
+		this.otrosGastos = otrosGastos;
+	}
+
+
 
 	public int getId() {
 		return id;

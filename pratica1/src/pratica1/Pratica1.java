@@ -44,7 +44,8 @@ public class Pratica1 {
 					+ "4. Listar en pantalla los miembros con motos en posesión \n"
 					+ "5. Listar todas las motos \n"
 					+ "6. Mostrar las cesiones realizadas \n"
-					+ "7. Salir del programa"
+					+ "7. Salir del programa \n"
+					+ "8. Incrementar otros gastos a una moto \n"
 					);
 			try {
 				choice = pedirEntero();
@@ -62,9 +63,12 @@ public class Pratica1 {
 				break;
 				case 6: System.out.println(listaCesiones());
 				break;
-				case 7: escribirFicheroTexto();
+				case 7: IncrementarOtrosGastos();
+				break;
+				case 8: escribirFicheroTexto();
 						end = true;
 				break;
+				
 				default : System.out.println("Porfavor, elige un numero valido");
 				}
 
@@ -112,8 +116,11 @@ public class Pratica1 {
 				numeroSocios = pedirEntero();
 			}while(!existeMiembro(numeroSocios));
 			
+			System.out.println("Escribir los otros gastos");
+			int otrosGastos = pedirEnteroPositivo();
+			
 			miembro = getMiembroByNumSocios(numeroSocios);
-			Moto moto = new Moto(nombre,CC,coste,miembro);
+			Moto moto = new Moto(nombre, CC, coste, miembro, otrosGastos);
 			//si podemos añadir la moto a un miembro, entonces añadimos
 			if(añadirMotoAMiembro(moto, miembro)){
 				motos.add(moto);
@@ -264,6 +271,30 @@ public class Pratica1 {
 		}while(valorIncorrecto);
 		return resultado;
 	}
+	
+	/**
+	 * Pedir un entero que es mas grande o igual a 0.
+	 * @return el entero que ha puesto el usuario mas grande o igual a 0.
+	 */
+	public static int pedirEnteroPositivo(){
+
+		// inicialización de las variables
+		Scanner input = new Scanner(System.in);
+		int resultado = 0;
+		boolean valorIncorrecto = true;
+
+		do{
+			try{
+				resultado = input.nextInt();
+				valorIncorrecto = false;
+			}
+			catch (Exception a){
+				System.out.println("Valor no funciona. Tienes que poner un numero. Intentar otra vez");
+				input.nextLine();
+			}
+		}while(valorIncorrecto || resultado < 0);
+		return resultado;
+	}
 
 	/**
 	 * Pedir una palabra.
@@ -402,6 +433,25 @@ public class Pratica1 {
 		miembros.set(index, miembro);
 	}
 	
+	public static void IncrementarOtrosGastos(){
+		listaMotos();
+		System.out.println("que es el id de la moto que quiere incrementar los gastos");
+		int idMoto;
+		do{
+			idMoto = pedirEntero();
+		}while(!existeMoto(idMoto));
+		
+		System.out.println("Cuales son los nuevos gastos a añadir?");
+		int otrosGastos = pedirEnteroPositivo();
+		
+		Moto moto = getMotoById(idMoto);
+		moto.setOtrosGastos(moto.getOtrosGastos() + otrosGastos);
+		
+		int index = motos.indexOf(moto);
+		motos.set(index, moto);
+		
+		System.out.println("otros gastos bien añadidos");
+	}
 	/**
 	 * Escribe los miembros con las motos y las cesiones dentro de un fichero
 	 */
