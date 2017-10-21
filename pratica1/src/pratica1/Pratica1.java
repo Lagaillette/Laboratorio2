@@ -209,18 +209,15 @@ public class Pratica1 {
 			resultado = "no hay miembros, perdonna";
 		}
 		else{
-			// inicialización de las variables
-			Moto moto;
-			Miembro miembro;
 			Iterator itMiembros = miembros.iterator();
 			
 			while(itMiembros.hasNext()){
-				miembro = (Miembro) itMiembros.next();
+				Miembro miembro = (Miembro) itMiembros.next();
 				//escribimos los miembros en el resultado
 				resultado += miembro.toString() + "\n";
 				Iterator itMotos = motos.iterator();
 				while(itMotos.hasNext()){
-					moto = (Moto) itMotos.next();
+					Moto moto = (Moto) itMotos.next();
 					if(moto.getMiembro() == miembro){
 						//escribimos las motos en el resultado
 						resultado += "   " + moto.toString() + "\n";
@@ -345,10 +342,9 @@ public class Pratica1 {
 	 */
 	public static boolean existeMiembro(int numSocios){
 		boolean existe = false;
-		Miembro miembro;
 		Iterator<Miembro> it = miembros.iterator();
 		while(it.hasNext() && existe==false){
-			miembro = (Miembro) it.next();
+			Miembro miembro = (Miembro) it.next();
 			if(miembro.getNumSocios() == numSocios){
 				existe = true;
 			}
@@ -366,10 +362,9 @@ public class Pratica1 {
 	 */
 	public static boolean existeMoto(int id){
 		boolean existe = false;
-		Moto moto;
 		Iterator it = motos.iterator();
 		while(it.hasNext() && existe!=true){
-			moto = (Moto) it.next();
+			Moto moto = (Moto) it.next();
 			if(moto.getId() == id){
 				existe = true;
 			}
@@ -387,6 +382,7 @@ public class Pratica1 {
 	 */
 	public static Miembro getMiembroByNumSocios(int numSocios){
 		boolean encontrado = false;
+		//el miembro que estamos buscando
 		Miembro miembro = null;
 		Iterator it = miembros.iterator();
 		while(it.hasNext() && !encontrado){
@@ -405,11 +401,9 @@ public class Pratica1 {
 	 */
 	public static ArrayList<Cesion> getCesionesDeUnMiembro(Miembro miembro){
 		ArrayList<Cesion> resultado = new ArrayList<Cesion>();
-		
-		Cesion cesion;
 		Iterator itCesion = historicaCesiones.iterator();
 		while(itCesion.hasNext()){
-			cesion = (Cesion) itCesion.next();
+			Cesion cesion = (Cesion) itCesion.next();
 			if(cesion.getMiembroNuevo() == miembro){
 				resultado.add(cesion);
 			}
@@ -424,6 +418,7 @@ public class Pratica1 {
 	 */
 	public static Moto getMotoById(int id){
 		boolean encontrado = false;
+		//la moto que estamos buscando
 		Moto moto = null;
 		Iterator it = motos.iterator();
 		while(it.hasNext() && !encontrado){
@@ -496,7 +491,6 @@ public class Pratica1 {
 	 * elimina el miembro que vas a entrar el numero de socios y todas las cesiones a donde el esta
 	 */
 	public static void eliminarMiembro(){
-		Moto moto;
 		int numSocios;
 		listaMiembros();
 		System.out.println("Cual es el miembro que quieres eliminar?");
@@ -507,7 +501,7 @@ public class Pratica1 {
 		ArrayList<Moto> motosACambiar = cogerMotoDeUnMiembro(numSocios);
 		Iterator itMotos = motosACambiar.iterator();
 		while(itMotos.hasNext()){
-			moto = (Moto) itMotos.next();
+			Moto moto = (Moto) itMotos.next();
 			System.out.println("Tenemos que cambiar el miembro que tiene la moto : " + moto.toString() + "/n");
 			while(moto.getMiembro() == miembro){
 				registrarCesionDeUnaMoto(moto);
@@ -537,11 +531,10 @@ public class Pratica1 {
 	 */
 	public static ArrayList<Moto> cogerMotoDeUnMiembro(int numSocios){
 		ArrayList<Moto> motosDelMiembro = new ArrayList<Moto>();
-		Moto moto;
 		Miembro miembro = getMiembroByNumSocios(numSocios);
 		Iterator itMotos = motos.iterator();
 		while(itMotos.hasNext()){
-			moto = (Moto) itMotos.next();
+			Moto moto = (Moto) itMotos.next();
 			if(moto.getMiembro() == miembro){
 				motosDelMiembro.add(moto);
 			}
@@ -551,7 +544,8 @@ public class Pratica1 {
 	}
 	
 	/**
-	 * 
+	 * Muestra en pantalla los miembros que tienen lo mas de cesiones adonde han recibido una moto.
+	 * Solo funciona con los miembros que no estan eliminados.
 	 */
 	public static void miembrosConMasCesiones(){
 		if(miembros.size() <= 1){
@@ -569,16 +563,13 @@ public class Pratica1 {
 			}else{
 				//Inicializacion del array ocurrencia, que va summir cada vez que un miembre ha recibido una moto
 				int ocurrencia[] = new int[miembros.size()];
-				int index;
-				Miembro miembro;
-				Cesion cesion;
 				Iterator itCesiones = historicaCesiones.iterator();
 				while(itCesiones.hasNext()){
-					cesion = (Cesion) itCesiones.next();
+					Cesion cesion = (Cesion) itCesiones.next();
 					//recuperamos el miembro que va tener la moto
-					miembro = cesion.getMiembroNuevo();
+					Miembro miembro = cesion.getMiembroNuevo();
 					//recuperamos el index del miembro dentro de la lista de miembros
-					index = miembros.indexOf(miembro);
+					int index = miembros.indexOf(miembro);
 					//incrementamos el numero de vez que aparece el miembro como miembro antiguo
 					ocurrencia[index] += 1;
 				}
@@ -601,13 +592,13 @@ public class Pratica1 {
 				ArrayList<Cesion> cesionesDelMiembro = new ArrayList<Cesion>();
 				Iterator itMiembros = miembrosConMasCesiones.iterator();
 				while (itMiembros.hasNext()){
-					miembro = (Miembro) itMiembros.next();
+					Miembro miembro = (Miembro) itMiembros.next();
 					System.out.println(miembro.toString());
 					System.out.println("ha recibido");
 					cesionesDelMiembro = getCesionesDeUnMiembro(miembro);
 					Iterator it = cesionesDelMiembro.iterator();
 					while(it.hasNext()){
-						cesion =  (Cesion) it.next();
+						Cesion cesion =  (Cesion) it.next();
 						System.out.println("  " + cesion.getMoto().toString());		
 					}
 				}
