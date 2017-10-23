@@ -513,6 +513,10 @@ public class Pratica1 {
 		
 	}
 	
+	/**
+	 * Permite eliminar las cesiones de un miembro.
+	 * @param miembro el miembro que queremos eliminar las cesiones
+	 */
 	public static void eliminarCesionesDeMiembros(Miembro miembro){
 		Iterator itCesiones = historicaCesiones.iterator();
 		while(itCesiones.hasNext()){
@@ -525,9 +529,9 @@ public class Pratica1 {
 	}
 	
 	/**
-	 * 
-	 * @param numSocios
-	 * @return
+	 * Permite coger las motos que tiene un miembro
+	 * @param numSocios el numero de moto de el miembro
+	 * @return la lista de las motos del miembro
 	 */
 	public static ArrayList<Moto> cogerMotoDeUnMiembro(int numSocios){
 		ArrayList<Moto> motosDelMiembro = new ArrayList<Moto>();
